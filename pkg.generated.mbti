@@ -1,0 +1,79 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "username/go_version"
+
+// Values
+fn collection_from_strings(Array[String]) -> Array[Version] raise VersionError
+
+fn collection_is_sorted(Array[Version]) -> Bool
+
+fn collection_sort(Array[Version]) -> Unit
+
+fn collection_sort_by_fn(Array[Version], (Version, Version) -> Int) -> Unit
+
+fn constraints_check(Array[Constraint], Version) -> Bool
+
+fn constraints_new(String) -> Array[Constraint] raise VersionError
+
+fn constraints_to_string(Array[Constraint]) -> String
+
+fn must(Result[Version, VersionError]) -> Version
+
+// Errors
+pub suberror VersionError String
+
+// Types and methods
+pub struct Constraint {
+  op : Operator
+  version : Version
+  original : String
+}
+fn Constraint::check(Self, Version) -> Bool
+fn Constraint::new(String) -> Self raise VersionError
+fn Constraint::to_string(Self) -> String
+impl Eq for Constraint
+impl Show for Constraint
+
+pub enum Operator {
+  Equal
+  NotEqual
+  GreaterThan
+  LessThan
+  GreaterThanEqual
+  LessThanEqual
+  Pessimistic
+}
+impl Eq for Operator
+impl Show for Operator
+
+pub struct Version {
+  metadata : String
+  pre : String
+  segments : Array[Int64]
+  si : Int
+  original : String
+}
+fn Version::compare(Self, Self) -> Int
+fn Version::core(Self) -> Self raise VersionError
+fn Version::equal(Self, Self) -> Bool
+fn Version::greater_than(Self, Self) -> Bool
+fn Version::greater_than_or_equal(Self, Self) -> Bool
+fn Version::less_than(Self, Self) -> Bool
+fn Version::less_than_or_equal(Self, Self) -> Bool
+fn Version::metadata(Self) -> String
+fn Version::new(String) -> Self raise VersionError
+fn Version::new_semver(String) -> Self raise VersionError
+fn Version::original(Self) -> String
+fn Version::prerelease(Self) -> String
+fn Version::segments(Self) -> Array[Int]
+fn Version::segments64(Self) -> Array[Int64]
+fn Version::to_string(Self) -> String
+impl Eq for Version
+impl Show for Version
+
+// Type aliases
+pub typealias Array[Version] as Collection
+
+pub typealias Array[Constraint] as Constraints
+
+// Traits
+
