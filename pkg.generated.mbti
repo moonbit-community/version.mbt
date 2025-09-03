@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "username/go_version"
+package "rami3l/version"
 
 // Values
 fn collection_from_strings(Array[String]) -> Array[Version] raise VersionError
@@ -10,7 +10,27 @@ fn collection_sort(Array[Version]) -> Unit
 
 fn collection_sort_by_fn(Array[Version], (Version, Version) -> Int) -> Unit
 
+fn constraint_at_least(String) -> Constraint raise VersionError
+
+fn constraint_below(String) -> Constraint raise VersionError
+
+fn constraint_exactly(String) -> Constraint raise VersionError
+
+fn constraint_pessimistic(String) -> Constraint raise VersionError
+
+fn constraint_range(String, String) -> Array[Constraint] raise VersionError
+
+fn constraints_allow_any(Array[Constraint]) -> Bool
+
 fn constraints_check(Array[Constraint], Version) -> Bool
+
+fn constraints_equal(Array[Constraint], Array[Constraint]) -> Bool
+
+fn constraints_max_version(Array[Constraint]) -> Version?
+
+fn constraints_min_version(Array[Constraint]) -> Version?
+
+fn constraints_must(String) -> Array[Constraint]
 
 fn constraints_new(String) -> Array[Constraint] raise VersionError
 
@@ -28,6 +48,8 @@ pub struct Constraint {
   original : String
 }
 fn Constraint::check(Self, Version) -> Bool
+fn Constraint::equals(Self, Self) -> Bool
+fn Constraint::has_prerelease(Self) -> Bool
 fn Constraint::new(String) -> Self raise VersionError
 fn Constraint::to_string(Self) -> String
 impl Eq for Constraint
@@ -55,17 +77,32 @@ pub struct Version {
 fn Version::compare(Self, Self) -> Int
 fn Version::core(Self) -> Self raise VersionError
 fn Version::equal(Self, Self) -> Bool
+fn Version::equal_segments(Self, Self) -> Bool
+fn Version::from_db_string(String) -> Self raise VersionError
+fn Version::from_json(String) -> Self raise VersionError
 fn Version::greater_than(Self, Self) -> Bool
 fn Version::greater_than_or_equal(Self, Self) -> Bool
+fn Version::increment_major(Self) -> Self raise VersionError
+fn Version::increment_minor(Self) -> Self raise VersionError
+fn Version::increment_patch(Self) -> Self raise VersionError
+fn Version::is_prerelease(Self) -> Bool
+fn Version::is_stable(Self) -> Bool
 fn Version::less_than(Self, Self) -> Bool
 fn Version::less_than_or_equal(Self, Self) -> Bool
+fn Version::major(Self) -> Int64
 fn Version::metadata(Self) -> String
+fn Version::minor(Self) -> Int64
+fn Version::must(String) -> Self
+fn Version::must_semver(String) -> Self
 fn Version::new(String) -> Self raise VersionError
 fn Version::new_semver(String) -> Self raise VersionError
 fn Version::original(Self) -> String
+fn Version::patch(Self) -> Int64
 fn Version::prerelease(Self) -> String
 fn Version::segments(Self) -> Array[Int]
 fn Version::segments64(Self) -> Array[Int64]
+fn Version::to_db_string(Self) -> String
+fn Version::to_json(Self) -> String
 fn Version::to_string(Self) -> String
 impl Eq for Version
 impl Show for Version

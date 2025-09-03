@@ -1,8 +1,8 @@
 {
-  "name": "moonbit/version",
-  "version": "1.0.0",
+  "name": "rami3l/version",
+  "version": "0.1.0",
   "readme": "README.md",
-  "repository": "https://github.com/moonbitlang/version",
+  "repository": "https://github.com/moonbit-community/version.mbt",
   "license": "MPL-2.0",
   "keywords": ["version", "semver", "semantic", "versioning", "constraints"],
   "description": "A MoonBit library for parsing, comparing, and handling semantic versions. Port of hashicorp/go-version."

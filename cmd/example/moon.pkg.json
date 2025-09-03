@@ -1,6 +1,4 @@
 {
   "is-main": true,
-  "import": [
-    "moonbit/version"
-  ]
+  "import": ["rami3l/version"]
 }
