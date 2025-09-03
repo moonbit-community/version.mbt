@@ -41,37 +41,22 @@ pub fn Constraint::new(
   }
 
   // Parse operator and version
-  let (op, version_str) = match trimmed.strip_prefix(">=") {
-    Some(remaining) => (Operator::GreaterThanEqual, remaining.to_string())
-    None =>
-      match trimmed.strip_prefix("<=") {
-        Some(remaining) => (Operator::LessThanEqual, remaining.to_string())
-        None =>
-          match trimmed.strip_prefix("!=") {
-            Some(remaining) => (Operator::NotEqual, remaining.to_string())
-            None =>
-              match trimmed.strip_prefix("~>") {
-                Some(remaining) =>
-                  (Operator::Pessimistic, remaining.to_string())
-                None =>
-                  match trimmed.strip_prefix(">") {
-                    Some(remaining) =>
-                      (Operator::GreaterThan, remaining.to_string())
-                    None =>
-                      match trimmed.strip_prefix("<") {
-                        Some(remaining) =>
-                          (Operator::LessThan, remaining.to_string())
-                        None =>
-                          match trimmed.strip_prefix("=") {
-                            Some(remaining) =>
-                              (Operator::Equal, remaining.to_string())
-                            None => (Operator::Equal, trimmed)
-                          }
-                      }
-                  }
-              }
-          }
-      }
+  let (op, version_str) = if trimmed.strip_prefix(">=") is Some(remaining) {
+    (Operator::GreaterThanEqual, remaining)
+  } else if trimmed.strip_prefix("<=") is Some(remaining) {
+    (Operator::LessThanEqual, remaining)
+  } else if trimmed.strip_prefix("!=") is Some(remaining) {
+    (Operator::NotEqual, remaining)
+  } else if trimmed.strip_prefix("~>") is Some(remaining) {
+    (Operator::Pessimistic, remaining)
+  } else if trimmed.strip_prefix(">") is Some(remaining) {
+    (Operator::GreaterThan, remaining)
+  } else if trimmed.strip_prefix("<") is Some(remaining) {
+    (Operator::LessThan, remaining)
+  } else if trimmed.strip_prefix("=") is Some(remaining) {
+    (Operator::Equal, remaining)
+  } else {
+    (Operator::Equal, trimmed)
   }
   let cleaned_version_str = version_str.trim_space().to_string()
   if cleaned_version_str.length() == 0 {
