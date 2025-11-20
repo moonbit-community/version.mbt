@@ -520,7 +520,7 @@ pub fn Version::compare(self : Version, other : Version) -> Int {
 }
 
 ///|
-pub fn equal_segments(self : Version, other : Version) -> Bool {
+pub fn Version::equal_segments(self : Version, other : Version) -> Bool {
   let segments_self = self.segments64()
   let segments_other = other.segments64()
   if segments_self.length() != segments_other.length() {

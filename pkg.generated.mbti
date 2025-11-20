@@ -108,9 +108,9 @@ impl Eq for Version
 impl Show for Version
 
 // Type aliases
-pub typealias Array[Version] as Collection
+pub type Collection = Array[Version]
 
-pub typealias Array[Constraint] as Constraints
+pub type Constraints = Array[Constraint]
 
 // Traits
 

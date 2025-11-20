@@ -24,7 +24,7 @@ pub struct Constraint {
 
 ///|
 /// Constraints is an array of constraints
-pub typealias Array[Constraint] as Constraints
+pub type Constraints = Array[Constraint]
 
 ///|
 /// Create a new constraint from a string like ">= 1.0", "< 2.0", etc.

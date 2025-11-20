@@ -4,7 +4,7 @@
 
 ///|
 /// Collection is a type alias for Array[Version] that provides sorting functionality
-pub typealias Array[Version] as Collection
+pub type Collection = Array[Version]
 
 ///|
 /// Sort versions in place
