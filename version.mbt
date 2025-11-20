@@ -374,26 +374,24 @@ fn new_version(v : String) -> Version raise VersionError {
   let mut i = 0
   let mut found_non_digit_non_dot = false
   while i < version_part.length() && !found_non_digit_non_dot {
-    let char_str = version_part[i:i + 1]
-    match char_str {
-      "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "." =>
-        i = i + 1
-      "-" => {
-        // Found explicit prerelease separator
-        core_part = version_part.substring(start=0, end=i).to_string()
-        pre = version_part
-          .substring(start=i + 1, end=version_part.length())
-          .to_string()
-        found_non_digit_non_dot = true
-      }
-      _ => {
-        // Found alpha character without dash - this is an implicit prerelease like "1.2.3alpha1"
-        core_part = version_part.substring(start=0, end=i).to_string()
-        pre = version_part
-          .substring(start=i, end=version_part.length())
-          .to_string()
-        found_non_digit_non_dot = true
-      }
+    let char_code = version_part[i]
+    let is_dot = char_code == '.'.to_int()
+    if is_digit_code(char_code) || is_dot {
+      i = i + 1
+    } else if char_code == '-'.to_int() {
+      // Found explicit prerelease separator
+      core_part = version_part.substring(start=0, end=i).to_string()
+      pre = version_part
+        .substring(start=i + 1, end=version_part.length())
+        .to_string()
+      found_non_digit_non_dot = true
+    } else {
+      // Found alpha character without dash - this is an implicit prerelease like "1.2.3alpha1"
+      core_part = version_part.substring(start=0, end=i).to_string()
+      pre = version_part
+        .substring(start=i, end=version_part.length())
+        .to_string()
+      found_non_digit_non_dot = true
     }
   }
   if !found_non_digit_non_dot {
