@@ -374,7 +374,7 @@ fn new_version(v : String) -> Version raise VersionError {
   let mut i = 0
   let mut found_non_digit_non_dot = false
   while i < version_part.length() && !found_non_digit_non_dot {
-    let char_str = version_part.substring(start=i, end=i + 1)
+    let char_str = version_part[i:i + 1]
     match char_str {
       "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "." =>
         i = i + 1
