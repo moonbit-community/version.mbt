@@ -47,8 +47,8 @@ fn string_compare(a : String, b : String) -> Int {
   let len_b = b.length()
   let min_len = if len_a < len_b { len_a } else { len_b }
   for i = 0; i < min_len; i = i + 1 {
-    let char_a = a[i]
-    let char_b = b[i]
+    let char_a = a.code_unit_at(i).to_int()
+    let char_b = b.code_unit_at(i).to_int()
     if char_a < char_b {
       return -1
     } else if char_a > char_b {
@@ -94,7 +94,7 @@ fn is_all_digits(s : String) -> Bool {
     return false
   }
   for i = 0; i < s.length(); i = i + 1 {
-    if !is_digit_code(s[i]) {
+    if !is_digit_code(s.code_unit_at(i).to_int()) {
       return false
     }
   }
@@ -109,13 +109,13 @@ fn try_fast_parse_simple_version(s : String) -> Bool {
   }
 
   // Must start with digit
-  if !is_digit_code(s[0]) {
+  if !is_digit_code(s.code_unit_at(0).to_int()) {
     return false
   }
 
   // Check for presence of characters that indicate complex version
   for i = 0; i < s.length(); i = i + 1 {
-    let c = s[i]
+    let c = s.code_unit_at(i).to_int()
     // Allow only digits and dots for simple versions
     if !is_digit_code(c) && c != '.'.to_int() {
       return false
@@ -123,13 +123,15 @@ fn try_fast_parse_simple_version(s : String) -> Bool {
   }
 
   // Must not start or end with dot, and no consecutive dots
-  if s[0] == '.'.to_int() || s[s.length() - 1] == '.'.to_int() {
+  if s.code_unit_at(0).to_int() == '.'.to_int() ||
+    s.code_unit_at(s.length() - 1).to_int() == '.'.to_int() {
     return false
   }
 
   // Check for consecutive dots
   for i = 0; i < s.length() - 1; i = i + 1 {
-    if s[i] == '.'.to_int() && s[i + 1] == '.'.to_int() {
+    if s.code_unit_at(i).to_int() == '.'.to_int() &&
+      s.code_unit_at(i + 1).to_int() == '.'.to_int() {
       return false
     }
   }
@@ -186,7 +188,7 @@ fn try_parse_int(s : String) -> Int64? {
   }
   let mut parsed_val = 0L
   for i = 0; i < s.length(); i = i + 1 {
-    match char_code_to_digit(s[i]) {
+    match char_code_to_digit(s.code_unit_at(i).to_int()) {
       Some(digit) => parsed_val = parsed_val * 10L + digit
       None => return None // Should not happen due to is_all_digits check
     }
@@ -212,7 +214,8 @@ fn new_version_semver(v : String) -> Version raise VersionError {
   }
 
   // Basic validation: version should start with a digit
-  if without_v.length() == 0 || !is_digit_code(without_v[0]) {
+  if without_v.length() == 0 ||
+    !is_digit_code(without_v.code_unit_at(0).to_int()) {
     raise VersionError(
       "malformed version '\{v}': version must start with a digit after optional 'v' prefix",
     )
@@ -298,7 +301,7 @@ fn new_version_semver(v : String) -> Version raise VersionError {
     let mut has_letter_after_digit = false
     let mut found_digit = false
     for i = 0; i < core_part.length(); i = i + 1 {
-      let c = core_part[i]
+      let c = core_part.code_unit_at(i).to_int()
       if is_digit_code(c) {
         found_digit = true
       } else if c != '.'.to_int() {
@@ -342,7 +345,8 @@ fn new_version(v : String) -> Version raise VersionError {
   }
 
   // Basic validation: version should start with a digit
-  if without_v.length() == 0 || !is_digit_code(without_v[0]) {
+  if without_v.length() == 0 ||
+    !is_digit_code(without_v.code_unit_at(0).to_int()) {
     raise VersionError("malformed version: \{v}")
   }
 
@@ -374,7 +378,7 @@ fn new_version(v : String) -> Version raise VersionError {
   let mut i = 0
   let mut found_non_digit_non_dot = false
   while i < version_part.length() && !found_non_digit_non_dot {
-    let char_code = version_part[i]
+    let char_code = version_part.code_unit_at(i).to_int()
     let is_dot = char_code == '.'.to_int()
     if is_digit_code(char_code) || is_dot {
       i = i + 1
