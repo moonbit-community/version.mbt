@@ -12,7 +12,22 @@ pub enum Operator {
   GreaterThanEqual
   LessThanEqual
   Pessimistic
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl Show for Operator with output(self, logger) {
+  logger.write_string(
+    match self {
+      Equal => "Equal"
+      NotEqual => "NotEqual"
+      GreaterThan => "GreaterThan"
+      LessThan => "LessThan"
+      GreaterThanEqual => "GreaterThanEqual"
+      LessThanEqual => "LessThanEqual"
+      Pessimistic => "Pessimistic"
+    },
+  )
+}
 
 ///|
 /// Constraint represents a single constraint for a version, such as ">= 1.0"
@@ -20,7 +35,12 @@ pub struct Constraint {
   op : Operator
   version : Version
   original : String
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl Show for Constraint with output(self, logger) {
+  logger.write_string(self.to_string())
+}
 
 ///|
 /// Constraints is an array of constraints

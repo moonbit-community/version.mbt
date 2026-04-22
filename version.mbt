@@ -22,7 +22,12 @@ pub struct Version {
   segments : Array[Int64]
   si : Int
   original : String
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl Show for Version with output(self, logger) {
+  logger.write_string(self.to_string())
+}
 
 ///|
 /// Create a new Version from a string
