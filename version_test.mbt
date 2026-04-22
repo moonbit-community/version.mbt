@@ -621,7 +621,6 @@ test "version_parsing_edge_cases" {
       let _ = Version::new(v.to_string()) catch {
         _ => abort("Round-trip failed for edge case: \{version_str}")
       }
-
     } catch {
       _ =>
         if !should_err {
