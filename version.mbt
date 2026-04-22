@@ -391,21 +391,13 @@ fn new_version(v : String) -> Version raise VersionError {
       i = i + 1
     } else if char_code == '-'.to_int() {
       // Found explicit prerelease separator
-      core_part = version_part[0:i].to_string() catch {
-        _ => raise VersionError("malformed version: {v}")
-      }
-      pre = version_part[i + 1:].to_string() catch {
-        _ => raise VersionError("malformed version: {v}")
-      }
+      core_part = version_part[0:i].to_string()
+      pre = version_part[i + 1:].to_string()
       found_non_digit_non_dot = true
     } else {
       // Found alpha character without dash - this is an implicit prerelease like "1.2.3alpha1"
-      core_part = version_part[0:i].to_string() catch {
-        _ => raise VersionError("malformed version: {v}")
-      }
-      pre = version_part[i:].to_string() catch {
-        _ => raise VersionError("malformed version: {v}")
-      }
+      core_part = version_part[0:i].to_string()
+      pre = version_part[i:].to_string()
       found_non_digit_non_dot = true
     }
   }
