@@ -4,7 +4,9 @@
 
 ///|
 // Error type for version parsing  
-pub suberror VersionError String
+pub suberror VersionError {
+  VersionError(String)
+}
 
 ///|
 impl Show for VersionError with output(self, logger) {
