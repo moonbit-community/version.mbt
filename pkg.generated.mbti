@@ -39,20 +39,21 @@ pub fn constraints_to_string(Array[Constraint]) -> String
 pub fn must(Result[Version, VersionError]) -> Version
 
 // Errors
-pub suberror VersionError String
+pub suberror VersionError {
+  VersionError(String)
+}
 
 // Types and methods
 pub struct Constraint {
   op : Operator
   version : Version
   original : String
-}
+} derive(Eq)
 pub fn Constraint::check(Self, Version) -> Bool
 pub fn Constraint::equals(Self, Self) -> Bool
 pub fn Constraint::has_prerelease(Self) -> Bool
 pub fn Constraint::new(String) -> Self raise VersionError
 pub fn Constraint::to_string(Self) -> String
-pub impl Eq for Constraint
 pub impl Show for Constraint
 
 pub enum Operator {
@@ -63,8 +64,7 @@ pub enum Operator {
   GreaterThanEqual
   LessThanEqual
   Pessimistic
-}
-pub impl Eq for Operator
+} derive(Eq)
 pub impl Show for Operator
 
 pub struct Version {
@@ -73,7 +73,7 @@ pub struct Version {
   segments : Array[Int64]
   si : Int
   original : String
-}
+} derive(Eq)
 pub fn Version::compare(Self, Self) -> Int
 pub fn Version::core(Self) -> Self raise VersionError
 pub fn Version::equal(Self, Self) -> Bool
@@ -104,7 +104,6 @@ pub fn Version::segments64(Self) -> Array[Int64]
 pub fn Version::to_db_string(Self) -> String
 pub fn Version::to_json(Self) -> String
 pub fn Version::to_string(Self) -> String
-pub impl Eq for Version
 pub impl Show for Version
 
 // Type aliases
