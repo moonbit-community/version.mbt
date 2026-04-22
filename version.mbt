@@ -205,7 +205,7 @@ fn try_parse_int(s : String) -> Int64? {
 
 ///|
 fn new_version_semver(v : String) -> Version raise VersionError {
-  let trimmed = v.trim_space()
+  let trimmed = v.trim()
 
   // Check for empty version
   if trimmed.length() == 0 {
@@ -332,7 +332,7 @@ fn new_version_semver(v : String) -> Version raise VersionError {
 
 ///|
 fn new_version(v : String) -> Version raise VersionError {
-  let trimmed = v.trim_space()
+  let trimmed = v.trim()
 
   // Check for empty version
   if trimmed.length() == 0 {

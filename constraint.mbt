@@ -51,7 +51,7 @@ pub type Constraints = Array[Constraint]
 pub fn Constraint::new(
   constraint_str : String,
 ) -> Constraint raise VersionError {
-  let trimmed = constraint_str.trim_space().to_string()
+  let trimmed = constraint_str.trim().to_string()
 
   // Check for empty constraint
   if trimmed.length() == 0 {
@@ -78,7 +78,7 @@ pub fn Constraint::new(
   } else {
     (Operator::Equal, trimmed)
   }
-  let cleaned_version_str = version_str.trim_space().to_string()
+  let cleaned_version_str = version_str.trim().to_string()
   if cleaned_version_str.length() == 0 {
     raise VersionError(
       "malformed constraint '\{constraint_str}': missing version after operator",
@@ -98,7 +98,7 @@ pub fn constraints_new(
   let parts = constraints_str.split(",")
   let constraints : Array[Constraint] = []
   for part in parts {
-    let constraint = Constraint::new(part.trim_space().to_string())
+    let constraint = Constraint::new(part.trim().to_string())
     constraints.push(constraint)
   }
   constraints
