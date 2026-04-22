@@ -1,0 +1,7 @@
+import {
+  "rami3l/version",
+}
+
+options(
+  "is-main": true,
+)
