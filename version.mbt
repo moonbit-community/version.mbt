@@ -155,7 +155,7 @@ fn parse_simple_numeric_version(
   let segments : Array[Int64] = []
   let mut actual_segment_count = 0
   for str in segments_str {
-    let str_string = str.to_string()
+    let str_string = str.to_owned()
     if str_string.length() == 0 {
       raise VersionError(
         "malformed version '\{original}': empty segment found in version components",
@@ -216,8 +216,8 @@ fn new_version_semver(v : String) -> Version raise VersionError {
 
   // Remove optional 'v' prefix
   let without_v = match trimmed.strip_prefix("v") {
-    Some(stripped) => stripped.to_string()
-    None => trimmed.to_string()
+    Some(stripped) => stripped.to_owned()
+    None => trimmed.to_owned()
   }
 
   // Basic validation: version should start with a digit
@@ -236,11 +236,11 @@ fn new_version_semver(v : String) -> Version raise VersionError {
   let mut part_count = 0
   for part in metadata_parts {
     if part_count == 0 {
-      version_part = part.to_string()
+      version_part = part.to_owned()
     } else if metadata.length() > 0 {
-      metadata = metadata + "+" + part.to_string()
+      metadata = metadata + "+" + part.to_owned()
     } else {
-      metadata = part.to_string()
+      metadata = part.to_owned()
     }
     part_count = part_count + 1
   }
@@ -252,11 +252,11 @@ fn new_version_semver(v : String) -> Version raise VersionError {
   part_count = 0
   for part in prerelease_parts {
     if part_count == 0 {
-      core_part = part.to_string()
+      core_part = part.to_owned()
     } else if pre.length() > 0 {
-      pre = pre + "-" + part.to_string()
+      pre = pre + "-" + part.to_owned()
     } else {
-      pre = part.to_string()
+      pre = part.to_owned()
     }
     part_count = part_count + 1
   }
@@ -284,7 +284,7 @@ fn new_version_semver(v : String) -> Version raise VersionError {
   let segments : Array[Int64] = []
   let mut actual_segment_count = 0
   for str in segments_str {
-    let str_string = str.to_string()
+    let str_string = str.to_owned()
     // Check for empty segments
     if str_string.length() == 0 {
       raise VersionError("malformed version: \{v}")
@@ -340,15 +340,15 @@ fn new_version(v : String) -> Version raise VersionError {
   }
 
   // Fast path for simple numeric versions like "1.2.3" (most common case)
-  let trimmed_str = trimmed.to_string()
+  let trimmed_str = trimmed.to_owned()
   if try_fast_parse_simple_version(trimmed_str) {
     return parse_simple_numeric_version(trimmed_str, v)
   }
 
   // Remove optional 'v' prefix
   let without_v = match trimmed.strip_prefix("v") {
-    Some(stripped) => stripped.to_string()
-    None => trimmed.to_string()
+    Some(stripped) => stripped.to_owned()
+    None => trimmed.to_owned()
   }
 
   // Basic validation: version should start with a digit
@@ -367,12 +367,12 @@ fn new_version(v : String) -> Version raise VersionError {
   let mut part_count = 0
   for part in metadata_parts {
     if part_count == 0 {
-      version_part = part.to_string()
+      version_part = part.to_owned()
       // Join remaining parts back (in case + appears in metadata)
     } else if metadata.length() > 0 {
-      metadata = metadata + "+" + part.to_string()
+      metadata = metadata + "+" + part.to_owned()
     } else {
-      metadata = part.to_string()
+      metadata = part.to_owned()
     }
     part_count = part_count + 1
   }
@@ -391,13 +391,13 @@ fn new_version(v : String) -> Version raise VersionError {
       i = i + 1
     } else if char_code == '-'.to_int() {
       // Found explicit prerelease separator
-      core_part = version_part[0:i].to_string()
-      pre = version_part[i + 1:].to_string()
+      core_part = version_part[0:i].to_owned()
+      pre = version_part[i + 1:].to_owned()
       found_non_digit_non_dot = true
     } else {
       // Found alpha character without dash - this is an implicit prerelease like "1.2.3alpha1"
-      core_part = version_part[0:i].to_string()
-      pre = version_part[i:].to_string()
+      core_part = version_part[0:i].to_owned()
+      pre = version_part[i:].to_owned()
       found_non_digit_non_dot = true
     }
   }
@@ -417,7 +417,7 @@ fn new_version(v : String) -> Version raise VersionError {
   let segments : Array[Int64] = []
   let mut actual_segment_count = 0
   for str in segments_str {
-    let str_string = str.to_string()
+    let str_string = str.to_owned()
     // Check for empty segments
     if str_string.length() == 0 {
       raise VersionError("malformed version: \{v}")
@@ -608,11 +608,11 @@ fn compare_prereleases(v : String, other : String) -> Int {
   // Split both pre releases to analyze their parts and convert directly to arrays
   let self_parts : Array[String] = []
   for part in v.split(".") {
-    self_parts.push(part.to_string())
+    self_parts.push(part.to_owned())
   }
   let other_parts : Array[String] = []
   for part in other.split(".") {
-    other_parts.push(part.to_string())
+    other_parts.push(part.to_owned())
   }
   let self_pre_release_len = self_parts.length()
   let other_pre_release_len = other_parts.length()
@@ -769,7 +769,7 @@ pub fn Version::from_json(json_str : String) -> Version raise VersionError {
   // Remove quotes if present (JSON strings are quoted)
   let unquoted = if json_str.strip_prefix("\"") is Some(without_prefix) &&
     without_prefix.strip_suffix("\"") is Some(without_suffix) {
-    without_suffix.to_string()
+    without_suffix.to_owned()
   } else {
     json_str
   }
