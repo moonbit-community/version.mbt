@@ -216,8 +216,12 @@ fn debug_pessimistic_constraint() -> Unit {
       if actual != expected {
         println("    ^^^ THIS IS THE FAILING TEST CASE ^^^")
         println("    Constraint si: \{constraint.version.si}")
-        println("    Constraint segments: \{constraint.version.segments64()}")
-        println("    Version segments: \{version.segments64()}")
+        println(
+          "    Constraint segments: \{@debug.to_string(constraint.version.segments64())}",
+        )
+        println(
+          "    Version segments: \{@debug.to_string(version.segments64())}",
+        )
         println(
           "    Loop should check i=0 to i<\{constraint.version.si - 1} (so \{constraint.version.si - 1} iterations)",
         )

@@ -19,7 +19,9 @@ test "collection_sort" {
   }
   let expected = ["0.7.1", "1.0.0", "1.1.1", "1.2.0", "2.0.0"]
   if actual != expected {
-    abort("Expected: \{expected}, Got: \{actual}")
+    abort(
+      "Expected: \{@debug.to_string(expected)}, Got: \{@debug.to_string(actual)}",
+    )
   }
 }
 
@@ -35,7 +37,9 @@ test "collection_from_strings" {
   }
   let expected = ["0.9.0", "1.0.0", "1.5.0", "2.0.0", "2.1.0"]
   if actual != expected {
-    abort("Expected: \{expected}, Got: \{actual}")
+    abort(
+      "Expected: \{@debug.to_string(expected)}, Got: \{@debug.to_string(actual)}",
+    )
   }
 }
 
@@ -97,7 +101,9 @@ test "collection_complex_versions" {
     "2.0.0-alpha.1", "2.0.0",
   ]
   if actual != expected {
-    abort("Complex sort failed. Expected: \{expected}, Got: \{actual}")
+    abort(
+      "Complex sort failed. Expected: \{@debug.to_string(expected)}, Got: \{@debug.to_string(actual)}",
+    )
   }
 }
 
@@ -123,7 +129,9 @@ test "collection_custom_sort" {
   }
   let expected = ["2.0.0", "1.5.0", "1.0.0"]
   if actual != expected {
-    abort("Reverse sort failed. Expected: \{expected}, Got: \{actual}")
+    abort(
+      "Reverse sort failed. Expected: \{@debug.to_string(expected)}, Got: \{@debug.to_string(actual)}",
+    )
   }
 }
 

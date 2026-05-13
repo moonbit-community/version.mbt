@@ -237,7 +237,9 @@ test "version_segments" {
     }
     let actual = v.segments()
     if actual != expected {
-      abort("segments for \{version_str}: expected \{expected}, got \{actual}")
+      abort(
+        "segments for \{version_str}: expected \{@debug.to_string(expected)}, got \{@debug.to_string(actual)}",
+      )
     }
   }
 }
@@ -259,7 +261,7 @@ test "version_segments64" {
     let actual = v.segments64()
     if actual != expected {
       abort(
-        "segments64 for \{version_str}: expected \{expected}, got \{actual}",
+        "segments64 for \{version_str}: expected \{@debug.to_string(expected)}, got \{@debug.to_string(actual)}",
       )
     }
   }
@@ -569,7 +571,7 @@ test "large_number_edge_cases" {
   let expected = [1L, 4L, 9223372036854775807L]
   if segments != expected {
     abort(
-      "Large number parsing failed. Expected: \{expected}, Got: \{segments}",
+      "Large number parsing failed. Expected: \{@debug.to_string(expected)}, Got: \{@debug.to_string(segments)}",
     )
   }
 
