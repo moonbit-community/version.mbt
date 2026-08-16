@@ -9,7 +9,7 @@ pub suberror VersionError {
 }
 
 ///|
-impl Show for VersionError with output(self, logger) {
+impl Show for VersionError with fn output(self, logger) {
   logger.write_string("VersionError: ")
   match self {
     VersionError(msg) => logger.write_string(msg)
@@ -27,9 +27,15 @@ pub struct Version {
 } derive(Eq)
 
 ///|
-pub impl Show for Version with output(self, logger) {
+pub extend Version with Eq::{not_equal}
+
+///|
+pub impl Show for Version with fn output(self, logger) {
   logger.write_string(self.to_string())
 }
+
+///|
+pub extend Version with Show::{output}
 
 ///|
 /// Create a new Version from a string

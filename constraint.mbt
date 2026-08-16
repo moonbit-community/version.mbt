@@ -15,7 +15,10 @@ pub enum Operator {
 } derive(Eq)
 
 ///|
-pub impl Show for Operator with output(self, logger) {
+pub extend Operator with Eq::{not_equal, equal}
+
+///|
+pub impl Show for Operator with fn output(self, logger) {
   logger.write_string(
     match self {
       Equal => "Equal"
@@ -30,6 +33,9 @@ pub impl Show for Operator with output(self, logger) {
 }
 
 ///|
+pub extend Operator with Show::{to_string, output}
+
+///|
 /// Constraint represents a single constraint for a version, such as ">= 1.0"
 pub struct Constraint {
   op : Operator
@@ -38,9 +44,15 @@ pub struct Constraint {
 } derive(Eq)
 
 ///|
-pub impl Show for Constraint with output(self, logger) {
+pub extend Constraint with Eq::{not_equal, equal}
+
+///|
+pub impl Show for Constraint with fn output(self, logger) {
   logger.write_string(self.to_string())
 }
+
+///|
+pub extend Constraint with Show::{output}
 
 ///|
 /// Constraints is an array of constraints
