@@ -13,7 +13,7 @@ test "new_constraint_basic" {
   for case in cases {
     let (input, expected_count, should_err) = case
     try {
-      let constraints = constraints_new(input)
+      let constraints = @version.constraints_new(input)
       if should_err {
         abort("expected error for input: \{input}")
       }
@@ -70,13 +70,13 @@ test "constraint_check" {
   ]
   for case in cases {
     let (constraint_str, version_str, expected) = case
-    let constraints = constraints_new(constraint_str) catch {
+    let constraints = @version.constraints_new(constraint_str) catch {
       _ => abort("Failed to parse constraint: \{constraint_str}")
     }
-    let version = Version::new(version_str) catch {
+    let version = @version.Version::new(version_str) catch {
       _ => abort("Failed to parse version: \{version_str}")
     }
-    let actual = constraints_check(constraints, version)
+    let actual = @version.constraints_check(constraints, version)
     if actual != expected {
       abort(
         "Version: \{version_str}, Constraint: \{constraint_str}, Expected: \{expected}, Got: \{actual}",
@@ -120,10 +120,10 @@ test "constraint_individual_operators" {
   ]
   for case in test_cases {
     let (constraint_str, version_str, expected) = case
-    let constraint = Constraint::new(constraint_str) catch {
+    let constraint = @version.Constraint::new(constraint_str) catch {
       _ => abort("Failed to parse constraint: \{constraint_str}")
     }
-    let version = Version::new(version_str) catch {
+    let version = @version.Version::new(version_str) catch {
       _ => abort("Failed to parse version: \{version_str}")
     }
     let actual = constraint.check(version)
@@ -147,7 +147,7 @@ test "constraint_prerelease" {
   ]
   for case in cases {
     let (constraint_str, expected_has_prerelease) = case
-    let constraint = Constraint::new(constraint_str) catch {
+    let constraint = @version.Constraint::new(constraint_str) catch {
       _ => abort("Failed to parse constraint: \{constraint_str}")
     }
     let actual_has_prerelease = constraint.version.prerelease() != ""
@@ -169,10 +169,10 @@ test "constraint_string_representation" {
   ]
   for case in cases {
     let (constraint_str, expected) = case
-    let constraints = constraints_new(constraint_str) catch {
+    let constraints = @version.constraints_new(constraint_str) catch {
       _ => abort("Failed to parse constraint: \{constraint_str}")
     }
-    let actual = constraints_to_string(constraints)
+    let actual = @version.constraints_to_string(constraints)
     if actual != expected {
       abort(
         "Constraint: \{constraint_str}, Expected: \{expected}, Got: \{actual}",
@@ -194,13 +194,13 @@ test "constraint_multiple" {
   ]
   for case in cases {
     let (constraints_str, version_str, expected) = case
-    let constraints = constraints_new(constraints_str) catch {
+    let constraints = @version.constraints_new(constraints_str) catch {
       _ => abort("Failed to parse constraints: \{constraints_str}")
     }
-    let version = Version::new(version_str) catch {
+    let version = @version.Version::new(version_str) catch {
       _ => abort("Failed to parse version: \{version_str}")
     }
-    let actual = constraints_check(constraints, version)
+    let actual = @version.constraints_check(constraints, version)
     if actual != expected {
       abort(
         "Constraints: \{constraints_str}, Version: \{version_str}, Expected: \{expected}, Got: \{actual}",
@@ -228,10 +228,10 @@ test "constraint_pessimistic_advanced" {
   ]
   for case in cases {
     let (constraint_str, version_str, expected) = case
-    let constraint = Constraint::new(constraint_str) catch {
+    let constraint = @version.Constraint::new(constraint_str) catch {
       _ => abort("Failed to parse constraint: \{constraint_str}")
     }
-    let version = Version::new(version_str) catch {
+    let version = @version.Version::new(version_str) catch {
       _ => abort("Failed to parse version: \{version_str}")
     }
     let actual = constraint.check(version)
@@ -255,7 +255,7 @@ test "constraint_error_cases" {
   ] // missing version for pessimistic
   for constraint_str in error_cases {
     try {
-      let _ = Constraint::new(constraint_str)
+      let _ = @version.Constraint::new(constraint_str)
       abort("Expected error for constraint: \{constraint_str}")
     } catch {
       _ => () // Expected error
@@ -275,13 +275,13 @@ test "constraint_equals_detailed" {
   ]
   for case in cases {
     let (left_str, right_str, expected) = case
-    let left_constraints = constraints_new(left_str) catch {
+    let left_constraints = @version.constraints_new(left_str) catch {
       _ => abort("Failed to parse left constraint: \{left_str}")
     }
-    let right_constraints = constraints_new(right_str) catch {
+    let right_constraints = @version.constraints_new(right_str) catch {
       _ => abort("Failed to parse right constraint: \{right_str}")
     }
-    let actual = constraints_equal(left_constraints, right_constraints)
+    let actual = @version.constraints_equal(left_constraints, right_constraints)
     if actual != expected {
       abort(
         "Constraints: \{left_str} vs \{right_str}, Expected: \{expected}, Got: \{actual}",
@@ -293,22 +293,22 @@ test "constraint_equals_detailed" {
 ///|
 test "constraints_must_helper" {
   // Test successful parsing
-  let constraints = constraints_must(">= 1.0, < 2.0")
+  let constraints = @version.constraints_must(">= 1.0, < 2.0")
   if constraints.length() != 2 {
     abort("constraints_must failed: expected 2 constraints")
   }
 
   // Verify the constraints work
-  let v1 = Version::new("1.5.0") catch {
+  let v1 = @version.Version::new("1.5.0") catch {
     _ => abort("Failed to create test version")
   }
-  if !constraints_check(constraints, v1) {
+  if !@version.constraints_check(constraints, v1) {
     abort("constraints_must result doesn't work correctly")
   }
-  let v2 = Version::new("2.5.0") catch {
+  let v2 = @version.Version::new("2.5.0") catch {
     _ => abort("Failed to create test version")
   }
-  if constraints_check(constraints, v2) {
+  if @version.constraints_check(constraints, v2) {
     abort("constraints_must result should reject version outside range")
   }
 }
@@ -316,16 +316,16 @@ test "constraints_must_helper" {
 ///|
 test "constraint_individual_equals" {
   // Test individual constraint equality
-  let c1 = Constraint::new("= 1.2.3") catch {
+  let c1 = @version.Constraint::new("= 1.2.3") catch {
     _ => abort("Failed to create constraint")
   }
-  let c2 = Constraint::new("= 1.2.3") catch {
+  let c2 = @version.Constraint::new("= 1.2.3") catch {
     _ => abort("Failed to create constraint")
   }
-  let c3 = Constraint::new("> 1.2.3") catch {
+  let c3 = @version.Constraint::new("> 1.2.3") catch {
     _ => abort("Failed to create constraint")
   }
-  let c4 = Constraint::new("= 1.2.4") catch {
+  let c4 = @version.Constraint::new("= 1.2.4") catch {
     _ => abort("Failed to create constraint")
   }
   if !c1.equals(c2) {
@@ -351,7 +351,7 @@ test "constraint_has_prerelease" {
   ]
   for case in cases {
     let (constraint_str, expected) = case
-    let constraint = Constraint::new(constraint_str) catch {
+    let constraint = @version.Constraint::new(constraint_str) catch {
       _ => abort("Failed to parse constraint: \{constraint_str}")
     }
     let actual = constraint.has_prerelease()
@@ -368,16 +368,16 @@ test "constraint_overflow_edge_cases" {
   // Test constraint with maximum valid Int64 (should work)
   let max_int64_constraint = ">= 1.0.9223372036854775807"
   try {
-    let constraints = constraints_new(max_int64_constraint)
+    let constraints = @version.constraints_new(max_int64_constraint)
     if constraints.length() != 1 {
       abort("Failed to parse max Int64 constraint")
     }
 
     // Test that it works with a version
-    let test_version = Version::new("1.0.9223372036854775807") catch {
+    let test_version = @version.Version::new("1.0.9223372036854775807") catch {
       _ => abort("Failed to create max Int64 version")
     }
-    if !constraints_check(constraints, test_version) {
+    if !@version.constraints_check(constraints, test_version) {
       abort("Max Int64 constraint should match max Int64 version")
     }
   } catch {
@@ -393,10 +393,10 @@ test "constraint_overflow_edge_cases" {
 ///|
 test "constraint_utility_functions" {
   // Test basic constraint helpers first
-  let at_least = constraint_at_least("1.0.0") catch {
+  let at_least = @version.constraint_at_least("1.0.0") catch {
     _ => abort("Failed to create at_least constraint")
   }
-  let version_1_5 = Version::new("1.5.0") catch {
+  let version_1_5 = @version.Version::new("1.5.0") catch {
     _ => abort("Failed to create version")
   }
   if !at_least.check(version_1_5) {
@@ -404,7 +404,7 @@ test "constraint_utility_functions" {
   }
 
   // Test below helper  
-  let below = constraint_below("2.0.0") catch {
+  let below = @version.constraint_below("2.0.0") catch {
     _ => abort("Failed to create below constraint")
   }
   if !below.check(version_1_5) {
@@ -412,7 +412,7 @@ test "constraint_utility_functions" {
   }
 
   // Test exactly helper
-  let exactly = constraint_exactly("1.5.0") catch {
+  let exactly = @version.constraint_exactly("1.5.0") catch {
     _ => abort("Failed to create exactly constraint")
   }
   if !exactly.check(version_1_5) {
@@ -420,8 +420,8 @@ test "constraint_utility_functions" {
   }
 
   // Test constraints_allow_any
-  let empty_constraints : Array[Constraint] = []
-  if !constraints_allow_any(empty_constraints) {
+  let empty_constraints : Array[@version.Constraint] = []
+  if !@version.constraints_allow_any(empty_constraints) {
     abort("Empty constraints should allow any version")
   }
 
@@ -430,9 +430,9 @@ test "constraint_utility_functions" {
   let mixed_constraints = [at_least, below, exactly]
 
   // Check minimum version (should find >= 1.0.0)
-  match constraints_min_version(mixed_constraints) {
+  match @version.constraints_min_version(mixed_constraints) {
     Some(min_ver) => {
-      let expected_min = Version::new("1.0.0") catch {
+      let expected_min = @version.Version::new("1.0.0") catch {
         _ => abort("Failed to create expected version")
       }
       if !min_ver.equal(expected_min) {
@@ -443,9 +443,9 @@ test "constraint_utility_functions" {
   }
 
   // Check maximum version (should find < 2.0.0)
-  match constraints_max_version(mixed_constraints) {
+  match @version.constraints_max_version(mixed_constraints) {
     Some(max_ver) => {
-      let expected_max = Version::new("2.0.0") catch {
+      let expected_max = @version.Version::new("2.0.0") catch {
         _ => abort("Failed to create expected max version")
       }
       if !max_ver.equal(expected_max) {
@@ -460,7 +460,7 @@ test "constraint_utility_functions" {
 test "constraint_improved_error_handling" {
   // Test empty constraint string
   try {
-    let _ = Constraint::new("")
+    let _ = @version.Constraint::new("")
     abort("Expected error for empty constraint")
   } catch {
     _ => ()
@@ -468,7 +468,7 @@ test "constraint_improved_error_handling" {
 
   // Test constraint with missing version
   try {
-    let _ = Constraint::new(">=")
+    let _ = @version.Constraint::new(">=")
     abort("Expected error for constraint with missing version")
   } catch {
     _ => ()
@@ -476,7 +476,7 @@ test "constraint_improved_error_handling" {
 
   // Test constraint with invalid version
   try {
-    let _ = Constraint::new(">= invalid.version")
+    let _ = @version.Constraint::new(">= invalid.version")
     abort("Expected error for constraint with invalid version")
   } catch {
     _ => ()
@@ -484,7 +484,7 @@ test "constraint_improved_error_handling" {
 
   // Test constraint with just whitespace after operator
   try {
-    let _ = Constraint::new(">=   ")
+    let _ = @version.Constraint::new(">=   ")
     abort("Expected error for constraint with whitespace after operator")
   } catch {
     _ => ()

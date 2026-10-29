@@ -3,6 +3,4 @@ import {
   "rami3l/version",
 }
 
-options(
-  "is-main": true,
-)
+pkgtype(kind: "executable")

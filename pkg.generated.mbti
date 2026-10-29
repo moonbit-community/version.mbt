@@ -8,7 +8,7 @@ pub fn collection_is_sorted(Array[Version]) -> Bool
 
 pub fn collection_sort(Array[Version]) -> Unit
 
-pub fn collection_sort_by_fn(Array[Version], (Version, Version) -> Int) -> Unit
+pub fn collection_sort_by_fn(Array[Version], (Version, Version) -> Int32) -> Unit
 
 pub fn constraint_at_least(String) -> Constraint raise VersionError
 
@@ -50,9 +50,12 @@ pub struct Constraint {
   original : String
 } derive(Eq)
 pub fn Constraint::check(Self, Version) -> Bool
+pub fn Constraint::equal(Self, Self) -> Bool
 pub fn Constraint::equals(Self, Self) -> Bool
 pub fn Constraint::has_prerelease(Self) -> Bool
 pub fn Constraint::new(String) -> Self raise VersionError
+pub fn Constraint::not_equal(Self, Self) -> Bool
+pub fn Constraint::output(Self, &Logger) -> Unit
 pub fn Constraint::to_string(Self) -> String
 pub impl Show for Constraint
 
@@ -65,16 +68,20 @@ pub enum Operator {
   LessThanEqual
   Pessimistic
 } derive(Eq)
+pub fn Operator::equal(Self, Self) -> Bool
+pub fn Operator::not_equal(Self, Self) -> Bool
+pub fn Operator::output(Self, &Logger) -> Unit
+pub fn Operator::to_string(Self) -> String
 pub impl Show for Operator
 
 pub struct Version {
   metadata : String
   pre : String
   segments : Array[Int64]
-  si : Int
+  si : Int32
   original : String
 } derive(Eq)
-pub fn Version::compare(Self, Self) -> Int
+pub fn Version::compare(Self, Self) -> Int32
 pub fn Version::core(Self) -> Self raise VersionError
 pub fn Version::equal(Self, Self) -> Bool
 pub fn Version::equal_segments(Self, Self) -> Bool
@@ -96,10 +103,12 @@ pub fn Version::must(String) -> Self
 pub fn Version::must_semver(String) -> Self
 pub fn Version::new(String) -> Self raise VersionError
 pub fn Version::new_semver(String) -> Self raise VersionError
+pub fn Version::not_equal(Self, Self) -> Bool
 pub fn Version::original(Self) -> String
+pub fn Version::output(Self, &Logger) -> Unit
 pub fn Version::patch(Self) -> Int64
 pub fn Version::prerelease(Self) -> String
-pub fn Version::segments(Self) -> Array[Int]
+pub fn Version::segments(Self) -> Array[Int32]
 pub fn Version::segments64(Self) -> Array[Int64]
 pub fn Version::to_db_string(Self) -> String
 pub fn Version::to_json(Self) -> String
@@ -112,4 +121,3 @@ pub type Collection = Array[Version]
 pub type Constraints = Array[Constraint]
 
 // Traits
-

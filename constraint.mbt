@@ -15,7 +15,7 @@ pub enum Operator {
 } derive(Eq)
 
 ///|
-pub impl Show for Operator with output(self, logger) {
+pub impl Show for Operator with fn output(self, logger) {
   logger.write_string(
     match self {
       Equal => "Equal"
@@ -38,7 +38,7 @@ pub struct Constraint {
 } derive(Eq)
 
 ///|
-pub impl Show for Constraint with output(self, logger) {
+pub impl Show for Constraint with fn output(self, logger) {
   logger.write_string(self.to_string())
 }
 
@@ -87,7 +87,7 @@ pub fn Constraint::new(
   let version = Version::new(cleaned_version_str) catch {
     e => raise VersionError("malformed constraint '\{constraint_str}': \{e}")
   }
-  { op, version, original: constraint_str }
+  { op, version, original: constraint_str, }
 }
 
 ///|
@@ -408,7 +408,7 @@ pub fn constraints_equal(
 
 ///|
 /// Helper function to compare operators for sorting
-fn compare_operators(a : Operator, b : Operator) -> Int {
+fn compare_operators(a : Operator, b : Operator) -> Int32 {
   let a_val = match a {
     Operator::Equal => 0
     Operator::NotEqual => 1
