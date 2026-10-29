@@ -9,7 +9,7 @@ pub suberror VersionError {
 }
 
 ///|
-impl Show for VersionError with output(self, logger) {
+impl Show for VersionError with fn output(self, logger) {
   logger.write_string("VersionError: ")
   match self {
     VersionError(msg) => logger.write_string(msg)
@@ -22,12 +22,12 @@ pub struct Version {
   metadata : String
   pre : String
   segments : Array[Int64]
-  si : Int
+  si : Int32
   original : String
 } derive(Eq)
 
 ///|
-pub impl Show for Version with output(self, logger) {
+pub impl Show for Version with fn output(self, logger) {
   logger.write_string(self.to_string())
 }
 
@@ -46,7 +46,7 @@ pub fn Version::new_semver(v : String) -> Version raise VersionError {
 ///|
 /// Helper function to compare strings character by character for proper lexicographic ordering
 /// Returns -1 if a < b, 0 if a == b, 1 if a > b
-fn string_compare(a : String, b : String) -> Int {
+fn string_compare(a : String, b : String) -> Int32 {
   if a == b {
     return 0
   }
@@ -75,7 +75,7 @@ fn string_compare(a : String, b : String) -> Int {
 
 ///|
 /// Helper function to check if a character code is a digit (optimized)
-fn is_digit_code(code : Int) -> Bool {
+fn is_digit_code(code : Int32) -> Bool {
   // Ultra-optimized digit checking using bit operations
   // ASCII '0' = 48 (0x30), '9' = 57 (0x39)
   // For digit range check: subtract 48 and check if result is <= 9
@@ -86,7 +86,7 @@ fn is_digit_code(code : Int) -> Bool {
 
 ///|
 /// Helper function to convert a digit character code to Int64
-fn char_code_to_digit(code : Int) -> Int64? {
+fn char_code_to_digit(code : Int32) -> Int64? {
   if is_digit_code(code) {
     Some((code - '0'.to_int()).to_int64())
   } else {
@@ -327,7 +327,7 @@ fn new_version_semver(v : String) -> Version raise VersionError {
   while segments.length() < 3 {
     segments.push(0L)
   }
-  Version::{ metadata, pre, segments, si: actual_segment_count, original: v }
+  Version::{ metadata, pre, segments, si: actual_segment_count, original: v, }
 }
 
 ///|
@@ -437,7 +437,7 @@ fn new_version(v : String) -> Version raise VersionError {
   while segments.length() < 3 {
     segments.push(0L)
   }
-  Version::{ metadata, pre, segments, si: actual_segment_count, original: v }
+  Version::{ metadata, pre, segments, si: actual_segment_count, original: v, }
 }
 
 ///|
@@ -470,7 +470,7 @@ pub fn Version::must_semver(v : String) -> Version {
 /// Compare compares this version to another version. This
 /// returns -1, 0, or 1 if this version is smaller, equal,
 /// or larger than the other version, respectively.
-pub fn Version::compare(self : Version, other : Version) -> Int {
+pub fn Version::compare(self : Version, other : Version) -> Int32 {
   // Quick equality check
   if self.to_string() == other.to_string() {
     return 0
@@ -540,7 +540,7 @@ pub fn Version::equal_segments(self : Version, other : Version) -> Bool {
 }
 
 ///|
-fn all_zero_from_index(segs : Array[Int64], start_index : Int) -> Bool {
+fn all_zero_from_index(segs : Array[Int64], start_index : Int32) -> Bool {
   for i = start_index; i < segs.length(); i = i + 1 {
     if segs[i] != 0L {
       return false
@@ -550,7 +550,7 @@ fn all_zero_from_index(segs : Array[Int64], start_index : Int) -> Bool {
 }
 
 ///|
-fn compare_part(pre_self : String, pre_other : String) -> Int {
+fn compare_part(pre_self : String, pre_other : String) -> Int32 {
   if pre_self == pre_other {
     return 0
   }
@@ -599,7 +599,7 @@ fn compare_part(pre_self : String, pre_other : String) -> Int {
 }
 
 ///|
-fn compare_prereleases(v : String, other : String) -> Int {
+fn compare_prereleases(v : String, other : String) -> Int32 {
   // The same pre release!
   if v == other {
     return 0
@@ -698,8 +698,8 @@ pub fn Version::prerelease(self : Version) -> String {
 
 ///|
 /// Segments returns the numeric segments of the version as a slice of ints.
-pub fn Version::segments(self : Version) -> Array[Int] {
-  let segment_slice : Array[Int] = []
+pub fn Version::segments(self : Version) -> Array[Int32] {
+  let segment_slice : Array[Int32] = []
   for v in self.segments {
     segment_slice.push(v.to_int())
   }

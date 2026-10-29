@@ -27,7 +27,7 @@ test "new_version_basic" {
   for case in cases {
     let (version, should_err) = case
     try {
-      let _ = Version::new(version)
+      let _ = @version.Version::new(version)
       if should_err {
         abort("expected error for version: \{version}")
       }
@@ -62,7 +62,7 @@ test "new_semver_basic" {
   for case in cases {
     let (version, should_err) = case
     try {
-      let _ = Version::new_semver(version)
+      let _ = @version.Version::new_semver(version)
       if should_err {
         abort("expected error for semver: \{version}")
       }
@@ -84,10 +84,10 @@ test "core_version" {
   ]
   for case in cases {
     let (v1_str, v2_str) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.core() catch {
@@ -123,10 +123,10 @@ test "version_compare" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.compare(v2)
@@ -159,10 +159,10 @@ test "compare_prerelease" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.compare(v2)
@@ -183,7 +183,7 @@ test "version_metadata" {
   ]
   for case in cases {
     let (version_str, expected) = case
-    let v = Version::new(version_str) catch {
+    let v = @version.Version::new(version_str) catch {
       _ => abort("Failed to create version from \{version_str}")
     }
     let actual = v.metadata()
@@ -208,7 +208,7 @@ test "version_prerelease" {
   ]
   for case in cases {
     let (version_str, expected) = case
-    let v = Version::new(version_str) catch {
+    let v = @version.Version::new(version_str) catch {
       _ => abort("Failed to create version from \{version_str}")
     }
     let actual = v.prerelease()
@@ -232,7 +232,7 @@ test "version_segments" {
   ]
   for case in cases {
     let (version_str, expected) = case
-    let v = Version::new(version_str) catch {
+    let v = @version.Version::new(version_str) catch {
       _ => abort("Failed to create version from \{version_str}")
     }
     let actual = v.segments()
@@ -255,7 +255,7 @@ test "version_segments64" {
   ]
   for case in cases {
     let (version_str, expected) = case
-    let v = Version::new(version_str) catch {
+    let v = @version.Version::new(version_str) catch {
       _ => abort("Failed to create version from \{version_str}")
     }
     let actual = v.segments64()
@@ -279,7 +279,7 @@ test "version_string" {
   ]
   for case in cases {
     let (input, expected) = case
-    let v = Version::new(input) catch {
+    let v = @version.Version::new(input) catch {
       _ => abort("Failed to create version from \{input}")
     }
     let actual = v.to_string()
@@ -316,10 +316,10 @@ test "version_equal" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.equal(v2)
@@ -352,10 +352,10 @@ test "version_greater_than" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.greater_than(v2)
@@ -388,10 +388,10 @@ test "version_less_than" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.less_than(v2)
@@ -424,10 +424,10 @@ test "version_greater_than_or_equal" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.greater_than_or_equal(v2)
@@ -460,10 +460,10 @@ test "version_less_than_or_equal" {
   ]
   for case in cases {
     let (v1_str, v2_str, expected) = case
-    let v1 = Version::new(v1_str) catch {
+    let v1 = @version.Version::new(v1_str) catch {
       _ => abort("Failed to create version from \{v1_str}")
     }
-    let v2 = Version::new(v2_str) catch {
+    let v2 = @version.Version::new(v2_str) catch {
       _ => abort("Failed to create version from \{v2_str}")
     }
     let actual = v1.less_than_or_equal(v2)
@@ -476,22 +476,22 @@ test "version_less_than_or_equal" {
 ///|
 test "must_helpers" {
   // Test successful parsing
-  let v1 = Version::must("1.2.3")
+  let v1 = @version.Version::must("1.2.3")
   if v1.to_string() != "1.2.3" {
     abort("Version::must failed for valid version")
   }
-  let v2 = Version::must_semver("1.2.3")
+  let v2 = @version.Version::must_semver("1.2.3")
   if v2.to_string() != "1.2.3" {
     abort("Version::must_semver failed for valid version")
   }
 
   // Test with Result type
-  let result_ok : Result[Version, VersionError] = Ok(
-    Version::new("1.2.3") catch {
+  let result_ok : Result[@version.Version, @version.VersionError] = Ok(
+    @version.Version::new("1.2.3") catch {
       _ => abort("Failed to create version")
     },
   )
-  let v3 = must(result_ok)
+  let v3 = @version.must(result_ok)
   if v3.to_string() != "1.2.3" {
     abort("must function failed for Ok result")
   }
@@ -505,7 +505,7 @@ test "json_marshaling" {
     "1.2.3.4-rc1-with-hyphen",
   ]
   for version_str in cases {
-    let v = Version::new(version_str) catch {
+    let v = @version.Version::new(version_str) catch {
       _ => abort("Failed to create version from \{version_str}")
     }
 
@@ -517,7 +517,7 @@ test "json_marshaling" {
 
     // Test from_json with quotes (simulating actual JSON)
     let quoted_json = "\"\{version_str}\""
-    let v_from_json = Version::from_json(quoted_json) catch {
+    let v_from_json = @version.Version::from_json(quoted_json) catch {
       _ => abort("Failed to parse JSON for \{version_str}")
     }
     if !v.equal(v_from_json) {
@@ -525,7 +525,7 @@ test "json_marshaling" {
     }
 
     // Test from_json without quotes
-    let v_from_json_unquoted = Version::from_json(version_str) catch {
+    let v_from_json_unquoted = @version.Version::from_json(version_str) catch {
       _ => abort("Failed to parse unquoted JSON for \{version_str}")
     }
     if !v.equal(v_from_json_unquoted) {
@@ -540,7 +540,7 @@ test "database_conversion" {
     "1.2.3", "1.2.0-x.Y.0+metadata", "1.2.3-rc1-with-hyphen", "1.2.3.4",
   ]
   for version_str in cases {
-    let v = Version::new(version_str) catch {
+    let v = @version.Version::new(version_str) catch {
       _ => abort("Failed to create version from \{version_str}")
     }
 
@@ -551,7 +551,7 @@ test "database_conversion" {
     }
 
     // Test from_db_string
-    let v_from_db = Version::from_db_string(db_str) catch {
+    let v_from_db = @version.Version::from_db_string(db_str) catch {
       _ => abort("Failed to parse database string for \{version_str}")
     }
     if !v.equal(v_from_db) {
@@ -564,7 +564,7 @@ test "database_conversion" {
 test "large_number_edge_cases" {
   // Test maximum Int64 value (from Go tests)
   let large_version_str = "1.4.9223372036854775807"
-  let v = Version::new(large_version_str) catch {
+  let v = @version.Version::new(large_version_str) catch {
     _ => abort("Failed to parse large version number")
   }
   let segments = v.segments64()
@@ -576,10 +576,10 @@ test "large_number_edge_cases" {
   }
 
   // Test version comparison with large numbers
-  let v1 = Version::new("1.4.9223372036854775806") catch {
+  let v1 = @version.Version::new("1.4.9223372036854775806") catch {
     _ => abort("Failed to parse large version")
   }
-  let v2 = Version::new("1.4.9223372036854775807") catch {
+  let v2 = @version.Version::new("1.4.9223372036854775807") catch {
     _ => abort("Failed to parse large version")
   }
   if !v1.less_than(v2) {
@@ -615,12 +615,12 @@ test "version_parsing_edge_cases" {
   for case in edge_cases {
     let (version_str, should_err) = case
     try {
-      let v = Version::new(version_str)
+      let v = @version.Version::new(version_str)
       if should_err {
         abort("Expected error for edge case: \{version_str}")
       }
       // Verify it can round-trip
-      let _ = Version::new(v.to_string()) catch {
+      let _ = @version.Version::new(v.to_string()) catch {
         _ => abort("Round-trip failed for edge case: \{version_str}")
       }
     } catch {
@@ -634,7 +634,7 @@ test "version_parsing_edge_cases" {
 
 ///|
 test "utility_functions" {
-  let v = Version::new("1.2.3-alpha") catch {
+  let v = @version.Version::new("1.2.3-alpha") catch {
     _ => abort("Failed to parse version")
   }
 
@@ -645,7 +645,7 @@ test "utility_functions" {
   if !v.is_prerelease() {
     abort("Expected is_prerelease() to be true for prerelease version")
   }
-  let stable_v = Version::new("1.2.3") catch {
+  let stable_v = @version.Version::new("1.2.3") catch {
     _ => abort("Failed to parse stable version")
   }
   if !stable_v.is_stable() {
@@ -693,7 +693,7 @@ test "utility_functions" {
   }
 
   // Test with short version
-  let short_v = Version::new("1") catch {
+  let short_v = @version.Version::new("1") catch {
     _ => abort("Failed to parse short version")
   }
   if short_v.major() != 1L {

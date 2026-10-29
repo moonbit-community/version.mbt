@@ -16,7 +16,7 @@ pub fn collection_sort(versions : Array[Version]) -> Unit {
 /// Sort versions in place using a custom comparison function
 pub fn collection_sort_by_fn(
   versions : Array[Version],
-  compare : (Version, Version) -> Int,
+  compare : (Version, Version) -> Int32,
 ) -> Unit {
   versions.sort_by(compare)
 }
